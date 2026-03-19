@@ -1,0 +1,33 @@
+[
+  {
+    "id": "rift-valley",
+    "name": "Rift Valley Drift",
+    "friction": 0.8,
+    "viscosity": 0.2,
+    "elevationVariance": 0.7,
+    "visibility": 0.4,
+    "weather": "mist",
+    "description": "High friction tarmac with dramatic elevation changes and low visibility mist."
+  },
+  {
+    "id": "northern-frontier",
+    "name": "Northern Frontier Raid",
+    "friction": 0.4,
+    "viscosity": 0.1,
+    "elevationVariance": 0.3,
+    "visibility": 0.9,
+    "weather": "heat-haze",
+    "windForce": 5.0,
+    "description": "Low friction sand tracks with extreme heat haze and lateral gale-force winds."
+  },
+  {
+    "id": "savannah-storm",
+    "name": "Savannah Storm",
+    "friction": 0.5,
+    "viscosity": 0.9,
+    "elevationVariance": 0.2,
+    "visibility": 0.3,
+    "weather": "heavy-showers",
+    "description": "Sticky black cotton soil with high viscosity and dynamic visibility reduction during heavy showers."
+  }
+]

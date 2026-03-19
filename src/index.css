@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Outfit", sans-serif;
+  
+  --color-safari-gold: #FFB800;
+  --color-safari-clay: #D45D31;
+  --color-safari-earth: #2D241E;
+  --color-safari-mud: #4A3728;
+  --color-safari-storm: #1A202C;
+}
+
+@layer base {
+  body {
+    @apply bg-safari-storm text-white font-body;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+}
