@@ -145,40 +145,67 @@ export const Showroom: React.FC<ShowroomProps> = ({
 
     // Simple Procedural Car Mesh (representing the selected car)
     // In a real app, we'd load a GLTF model here
-    const bodyGeom = new THREE.BoxGeometry(4, 1, 2);
+    const isTruck = selectedCar.id === 'toyota-hilux' || selectedCar.id === 'safari-defender';
+    
+    // Main Body (Chassis)
+    const bodyGeom = new THREE.BoxGeometry(isTruck ? 4.5 : 4, 1, 2.2);
     const bodyMat = new THREE.MeshStandardMaterial({ 
       color: selectedCar.color,
-      roughness: 0.2,
-      metalness: 0.8
+      roughness: 0.4,
+      metalness: 0.3
     });
     const body = new THREE.Mesh(bodyGeom, bodyMat);
     body.position.y = 0.8;
     body.castShadow = true;
     group.add(body);
 
-    const cabinGeom = new THREE.BoxGeometry(2, 0.8, 1.8);
-    const cabinMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+    // Cabin
+    const cabinGeom = new THREE.BoxGeometry(isTruck ? 2.2 : 2, 0.8, 2);
+    const cabinMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.1 });
     const cabin = new THREE.Mesh(cabinGeom, cabinMat);
-    cabin.position.set(-0.2, 1.6, 0);
+    cabin.position.set(isTruck ? -0.5 : -0.2, 1.6, 0);
     cabin.castShadow = true;
     group.add(cabin);
+
+    if (isTruck) {
+      // Truck Bed
+      const bedGeom = new THREE.BoxGeometry(1.8, 0.6, 2);
+      const bed = new THREE.Mesh(bedGeom, bodyMat);
+      bed.position.set(1.3, 1.2, 0);
+      bed.castShadow = true;
+      group.add(bed);
+
+      // Roll Cage
+      const cageMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+      const cageGeom = new THREE.CylinderGeometry(0.05, 0.05, 2.2);
+      
+      const cage1 = new THREE.Mesh(cageGeom, cageMat);
+      cage1.rotation.x = Math.PI / 2;
+      cage1.position.set(0.5, 1.8, 1);
+      group.add(cage1);
+
+      const cage2 = new THREE.Mesh(cageGeom, cageMat);
+      cage2.rotation.x = Math.PI / 2;
+      cage2.position.set(0.5, 1.8, -1);
+      group.add(cage2);
+    }
 
     // Safari Snorkel (Visual Highlight)
     const snorkelGeom = new THREE.CylinderGeometry(0.1, 0.1, 1.5);
     const snorkelMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
     const snorkel = new THREE.Mesh(snorkelGeom, snorkelMat);
-    snorkel.position.set(0.5, 1.8, 0.9);
+    snorkel.position.set(0.5, 1.8, 1.1);
     snorkel.rotation.z = Math.PI / 8;
     group.add(snorkel);
 
     // Wheels
-    const wheelGeom = new THREE.CylinderGeometry(0.5, 0.5, 0.4, 32);
+    const wheelGeom = new THREE.CylinderGeometry(0.6, 0.6, 0.5, 32);
     wheelGeom.rotateX(Math.PI / 2);
-    const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+    const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
 
     const wheelPositions = [
-      [1.5, 0.5, 1], [1.5, 0.5, -1],
-      [-1.5, 0.5, 1], [-1.5, 0.5, -1]
+      [1.6, 0.6, 1.1], [1.6, 0.6, -1.1],
+      [-1.6, 0.6, 1.1], [-1.6, 0.6, -1.1]
     ];
 
     wheelPositions.forEach(pos => {

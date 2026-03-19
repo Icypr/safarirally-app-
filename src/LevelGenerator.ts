@@ -108,10 +108,12 @@ export class LevelGenerator {
       const diff = p2.position.clone().sub(p1.position);
       const length = diff.length();
       
-      const shape = new CANNON.Box(new CANNON.Vec3(p1.width / 2, 0.1, length / 2));
+      // Increased thickness (y-axis) to 1.0 (from 0.1) to prevent tunneling/sinking
+      const shape = new CANNON.Box(new CANNON.Vec3(p1.width / 2, 0.5, length / 2));
       const body = new CANNON.Body({ mass: 0 });
       body.addShape(shape);
-      body.position.set(center.x, center.y - 0.1, center.z);
+      // Offset the body downwards so the top surface matches the visual track
+      body.position.set(center.x, center.y - 0.5, center.z);
       
       // Rotate body to align with track direction
       const quaternion = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), diff.clone().normalize());

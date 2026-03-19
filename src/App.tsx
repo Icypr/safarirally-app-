@@ -12,7 +12,8 @@ import { MainMenu } from './components/MainMenu';
 import { RaceEnd } from './components/RaceEnd';
 import { Showroom } from './components/Showroom';
 import { MobileControls } from './components/MobileControls';
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Pause } from 'lucide-react';
+import { PauseMenu } from './components/PauseMenu';
 import { CameraManager, CameraMode } from './CameraManager';
 import { LevelGenerator } from './LevelGenerator';
 import { WindshieldMud } from './components/WindshieldMud';
@@ -43,16 +44,16 @@ export default function App() {
   });
   const [ownedCars, setOwnedCars] = useState<string[]>(() => {
     const saved = localStorage.getItem('safari-owned-cars');
-    return saved ? JSON.parse(saved) : ['vw-beetle'];
+    return saved ? JSON.parse(saved) : ['toyota-hilux'];
   });
   const [selectedCarId, setSelectedCarId] = useState(() => {
     const saved = localStorage.getItem('safari-selected-car');
-    return saved || 'vw-beetle';
+    return saved || 'toyota-hilux';
   });
   const [carCustomizations, setCarCustomizations] = useState<{ [carId: string]: CarCustomization }>(() => {
     const saved = localStorage.getItem('safari-customizations');
     return saved ? JSON.parse(saved) : {
-      'vw-beetle': { color: '#D45D31', upgrades: [] }
+      'toyota-hilux': { color: '#EAE0D5', upgrades: [] }
     };
   });
   const [currentLevel, setCurrentLevel] = useState<RaceConfig | null>(null);
@@ -60,6 +61,7 @@ export default function App() {
   
   // Showroom State
   const [showroomIndex, setShowroomIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   // Runtime State
   const [speed, setSpeed] = useState(0);
@@ -212,6 +214,10 @@ export default function App() {
     let timeScale = 1.0;
     const animate = () => {
       if (!gameRef.current?.active) return;
+      if (isPaused) {
+        frameId = requestAnimationFrame(animate);
+        return;
+      }
       
       const time = performance.now();
       const { world, vehicle, env, wildlife, mud, rivals, hazards, cameraManager, keys, camera, renderer, scene, startTime } = gameRef.current;
@@ -340,9 +346,34 @@ export default function App() {
           <MobileControls onInput={(key, pressed) => {
             if (gameRef.current) gameRef.current.keys[key] = pressed;
           }} />
-          <div className="fixed top-8 left-1/2 -translate-x-1/2 glass-card px-6 py-2 rounded-full border-t-2 border-safari-gold">
-            <p className="text-xs font-bold uppercase tracking-widest">Time: {raceTime.toFixed(2)}s / {currentLevel?.targetTime}s</p>
+          
+          <div className="fixed top-8 left-1/2 -translate-x-1/2 flex items-center gap-4">
+            <div className="glass-card px-6 py-2 rounded-full border-t-2 border-safari-gold">
+              <p className="text-xs font-bold uppercase tracking-widest">Time: {raceTime.toFixed(2)}s / {currentLevel?.targetTime}s</p>
+            </div>
+            <button 
+              onClick={() => setIsPaused(true)}
+              className="w-10 h-10 glass-card rounded-full border-t-2 border-safari-gold flex items-center justify-center hover:bg-safari-gold hover:text-black transition-all active:scale-95"
+            >
+              <Pause size={16} fill="currentColor" />
+            </button>
           </div>
+
+          {currentLevel && (
+            <PauseMenu 
+              isOpen={isPaused}
+              onResume={() => setIsPaused(false)}
+              onRestart={() => {
+                setIsPaused(false);
+                setGameState('loading');
+              }}
+              onQuit={() => {
+                setIsPaused(false);
+                setGameState('menu');
+              }}
+              race={currentLevel}
+            />
+          )}
         </>
       )}
 

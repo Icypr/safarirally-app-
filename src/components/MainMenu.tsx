@@ -284,7 +284,7 @@ export const MainMenu: React.FC<MenuProps> = ({
           className="absolute inset-0 opacity-40 blur-xl"
         >
           <img 
-            src="https://images.unsplash.com/photo-1532581133568-393f04805622?auto=format&fit=crop&q=80&w=1920" 
+            src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&q=80&w=1920" 
             alt="Safari Background" 
             className="w-full h-full object-cover"
             referrerPolicy="no-referrer"

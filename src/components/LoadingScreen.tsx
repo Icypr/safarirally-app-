@@ -66,10 +66,10 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ race, onComplete }
   return (
     <div className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center p-8 overflow-hidden">
       {/* Background Ambience */}
-      <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 opacity-40">
         <img 
-          src={`https://picsum.photos/seed/${race.id}/1920/1080?blur=10`} 
-          alt="Loading Background" 
+          src="https://images.unsplash.com/photo-1533106418989-88406c7cc8ca?q=80&w=2070&auto=format&fit=crop"
+          alt="Safari Rally Background" 
           className="w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
